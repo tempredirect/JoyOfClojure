@@ -12,7 +12,7 @@
 
 (def words
   "Dictionary of words for the transalation of digits to words"
-  { 0 "zero" 1 "one" 2 "two" 3 "three" 4 "four" 5 "five" 6 "six" 7 "seven" 8 "eight" 9 "nine" 10 "ten"
+  { 1 "one" 2 "two" 3 "three" 4 "four" 5 "five" 6 "six" 7 "seven" 8 "eight" 9 "nine" 10 "ten"
     11 "eleven" 12 "twelve" 13 "thirteen" 14 "fourteen" 15 "fifteen" 16 "sixteen" 17 "seventeen" 18 "eigthteen" 19 "nineteen" 20 "twenty"
     30 "thirty" 40 "forty" 50 "fifty" 60 "sixty" 70 "seventy" 80 "eighty" 90 "ninety"
     })
@@ -20,12 +20,16 @@
 (defn triplet-as-words
   "given a three digit (or less string) returns the word representation of it"
   [s]
-    (let [value (BigInteger. (str s))]
-      (if (> value 99)
-        (str (words (int (/ value 100))) " hundred and " (triplet-as-words (.substring s 1)))
-        (if (words value)
-          (words value)
-          (str (words (- value (mod value 10))) "-" (words (mod value 10)))))
+    (let [value (Integer. (str s))
+          mod10 (mod value 10)]
+      (cond
+        (> value 99) (str (words (int (/ value 100))) " hundred"
+                        (if (not= "00" (.substring s 1))
+                          (str " and " (triplet-as-words (.substring s 1)))))
+        (zero? value) nil
+        (contains? words value) (words value)
+        :else (str (words (- value mod10))
+                (if (not= 0 mod10) (str "-" (words mod10)))))
   ))
 
 (defn number-as-words [number]
