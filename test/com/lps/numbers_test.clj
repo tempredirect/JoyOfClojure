@@ -10,6 +10,9 @@
 (deftest test-number-as-words-3
   (is (= "one hundred and sixty" (number-as-words 160))))
 
+(deftest test-number-as-words-minus
+  (is (= "minus one hundred and sixty" (number-as-words -160))))
+
 (deftest test-triplets-1
   (is (= "1" (first (triplets "1")))))
 

@@ -1,7 +1,10 @@
 (ns com.lps.numbers
-  (:require [clojure.string :as str] [clojure.zip :as zip]))
+  (:require [clojure.string :as str]
+            [clojure.zip :as zip]
+            [clojure.contrib.math :as math]))
 
-(defn triplets "Splits a string into three char blocks (triplets) with the first having the odd number of chars"
+(defn triplets
+  "Splits a string into three char blocks (triplets) with the first having the odd number of chars"
   [s] (let [len (.length s)
             modlen (mod len 3)
             chunksize (if (zero? modlen) 3 modlen)
@@ -33,23 +36,12 @@
   ))
 
 (defn number-as-words [number]
-  (.trim (str/join " "
-    (reverse
-      (map #(str/join " " [%2 %1])  [ "" "thousand" "million" "billon" "trillon" "quadrillion" "quintillion" "sextillion"]
-        (reverse (map triplet-as-words (triplets (str number)))))))))
-
-;(println (triplets "232"))
-;(println (triplets "1232232"))
-;
-;(println (number-as-words 123))
-;(println (number-as-words 1023))
-;(println (number-as-words 57))
-;(println (number-as-words 123123157))
-;(println (number-as-words 1423323699))
-
-;(println "1   " (str/join " and " (triplet-as-words "1")))
-;(println "10  " (triplet-as-words "10"))
-;(println "100 " (triplet-as-words "100"))
-;(println "111 " (str/join " and " (triplet-as-words "111")))
-;(println "111 " (str/join " and " (triplet-as-words "111")))
+  "converts a number into words"
+  (str
+    (if (neg? number) "minus ")
+    (if (zero? number) "zero" ; special case zero
+      (.trim (str/join " " ; normal case
+        (reverse
+          (map #(str/join " " [%2 %1])  [ "" "thousand" "million" "billon" "trillon" "quadrillion" "quintillion" "sextillion"]
+            (reverse (map triplet-as-words (triplets (str (math/abs number))))))))))))
 
