@@ -13,6 +13,9 @@
 (deftest test-number-as-words-minus
   (is (= "minus one hundred and sixty" (number-as-words -160))))
 
+(deftest test-number-as-words-thousands
+  (is (= "one thousand one hundred and twelve" (number-as-words 1112))))
+
 (deftest test-triplets-1
   (is (= "1" (first (triplets "1")))))
 

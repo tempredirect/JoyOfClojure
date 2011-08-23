@@ -32,11 +32,12 @@
         (zero? value) nil
         (contains? words value) (words value)
         :else (str (words (- value mod10))
+                ;; google convention of "-" hyphenating
                 (if (not= 0 mod10) (str "-" (words mod10)))))
   ))
 
 (defn number-as-words [number]
-  "converts a number into words"
+  "converts a number into words, following the google convention of hyphenating numbers"
   (str
     (if (neg? number) "minus ")
     (if (zero? number) "zero" ; special case zero
