@@ -1,11 +1,17 @@
 (ns com.lps.webapp
-  (:use compojure.core ring.adapter.jetty com.lps.numbers)
+  (:use compojure.core ring.adapter.jetty
+        com.lps.numbers
+        com.lps.views
+        )
   (:require [compojure.route :as route]
-            [compojure.handler :as handler]))
+            [compojure.handler :as handler]
+            [ring.util.response :as ringresponse]))
 
 (defroutes main-routes
-  (GET "/" [] "<h1>Hello Mum!</h1>")
-  (GET ["/words/:n", :n #"[0-9]+"] [n] (number-as-words (BigInteger. n)))
+  (GET "/" [] (index-page))
+  (POST "/" [number] (ringresponse/redirect (str "/" number)))
+  (GET ["/:n", :n #"[0-9]+"] [n] (number-page (BigInteger. n)))
+  (GET ["/:n/english", :n #"[0-9]+"] [n] (number-as-words (BigInteger. n)))
   (route/resources "/")
   (route/not-found "Page not found"))
 
