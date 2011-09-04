@@ -6,6 +6,8 @@
   (html5
     [:head
       [:title title]
+      [:script {:type "text/javascript" :src "http://use.typekit.com/hzg8sis.js"} ]
+      [:script {:type "text/javascript"} "try{Typekit.load();}catch(e){}" ]
       (include-css "/css/style.css")]
     [:body
       [:div#content
@@ -25,6 +27,4 @@
 
 (defn number-page [number]
   (main-layout (str number)
-    [:dl
-     [:dt [:strong "English"]]
-     [:dd (number-as-words number)]]))
+    [:p.english [:strong (number-as-words number)]]))
