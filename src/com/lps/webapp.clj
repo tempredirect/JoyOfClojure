@@ -2,6 +2,7 @@
   (:use compojure.core ring.adapter.jetty
         com.lps.numbers
         com.lps.views
+        com.lps.style
         )
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
@@ -10,8 +11,10 @@
 (defroutes main-routes
   (GET "/" [] (index-page))
   (POST "/" [number] (ringresponse/redirect (str "/" number)))
-  (GET ["/:n", :n #"[0-9]+"] [n] (number-page (BigInteger. n)))
-  (GET ["/:n/english", :n #"[0-9]+"] [n] (number-as-words (BigInteger. n)))
+  (GET ["/:n", :n #"-?[0-9]+"] [n] (number-page (bigint n)))
+  (GET ["/:n/english", :n #"-?[0-9]+"] [n] (number-as-words (bigint n)))
+  (GET "/style.css" [] (-> (ringresponse/response (defaultstyle))
+                           (ringresponse/content-type "text/css")))
   (route/resources "/")
   (route/not-found "Page not found"))
 
